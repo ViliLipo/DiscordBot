@@ -3,6 +3,7 @@ import asyncio
 import stats
 import argparse
 import sys
+import tools
 
 # Pass the token as a commandline argument"
 client = discord.Client()
@@ -27,8 +28,19 @@ async def on_message(message):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
     elif message.content.startswith('!osrsStats'):
-        player = message.content.split(" ")[1]
-        ms = stats.osrs_request(player)
-        await client.send_message(message.channel, ms)
+        l = False
+        content = message.content
+        player, l = tools.parse_osrs_request(content)
+        try:
+            playerObject = stats.Player(player)
+            playerObject = stats.osrs_request_player(player)
+        except:
+            await client.send_message(message.channel, ("Can't find data for " + player))
+            return
+        if (l):
+            reply = "```" + playerObject.longMessage() + "```"
+        else:
+            reply = "```"  + playerObject.shortMessage() + "```"
+        await client.send_message(message.channel, reply)
 #print(sys.argv[1])
 client.run(sys.argv[1])
