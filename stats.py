@@ -20,7 +20,7 @@ class Skill:
         self.level = 0
     def __str__(self):
         #text = (self.name + " Rank: " + str(self.rank) + " Experience: " + str(self.exp) + " Level: " + str(self.level))
-        text = '|{0:12}|{1:7}|{2:8}|{3:5}|'.format(self.name, str(self.rank), str(self.exp), str(self.level))
+        text = '|{0:12}|{1:7}|{2:9}|{3:5}|'.format(self.name, str(self.rank), str(self.exp), str(self.level))
         text = text + "\n ------------------------------------"
         return text
 
@@ -29,13 +29,13 @@ class Player:
         self.name = playername
         self.skills = []
     def shortMessage(self):
-        print("shortMessage")
-        message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:8}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
+        #print("shortMessage")
+        message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:9}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
         message = message +  "\n ------------------------------------"
         message = message +"\n" + str(self.skills[0])
         return message
     def longMessage(self):
-        message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:8}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
+        message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:9}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
         message = message +  "\n ------------------------------------\n"
         for skill in self.skills:
             message = message + str(skill) + "\n"
@@ -57,12 +57,8 @@ def osrs_request_player(playername):
         return
     #print(content)
     player = Player(playername)
-
     #print(content)
     lines = content.split('\n')
-
-    datatable = []
-
     for i in range(0, len(skilltable)):
         line = lines[i]
         txtline = line.split(',')
