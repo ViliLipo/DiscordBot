@@ -10,7 +10,7 @@ skilltable = ["Total","Attack", "Defence", "Strength", \
 "Thieving", "Slayer", "Farming", "Runecrafting", "Hunter", \
 "Construction"]
 
-
+# Simple class for managing skill lines
 class Skill:
     def __init__(self, index):
         self.name = skilltable[index]
@@ -23,7 +23,7 @@ class Skill:
         text = '|{0:12}|{1:7}|{2:9}|{3:5}|'.format(self.name, str(self.rank), str(self.exp), str(self.level))
         text = text + "\n ------------------------------------"
         return text
-
+# Simple class for managin hiscores from one player
 class Player:
     def __init__(self, playername):
         self.name = playername
@@ -41,7 +41,7 @@ class Player:
             message = message + str(skill) + "\n"
         return message
 
-
+#funktion that returns playerObject.
 def osrs_request_player(playername):
     print("Fetching")
     API_ENDPOINT = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"
@@ -70,10 +70,6 @@ def osrs_request_player(playername):
 
     return player
 
-def testdriver():
-    player = osrs_request_player("Klassi")
-    print(player.shortMessage())
-    print(player.longMessage())
 
 
 #testdriver()

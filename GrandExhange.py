@@ -32,6 +32,10 @@ class GrandExhangeService:
         else:
             return -1
 
+    '''
+    Uses requests to fetch information for one item
+    Returns dictionary object representing the item
+    '''
     def fetchItem(self, itemId):
         url = self.baseurl +'/api/catalogue/detail.json'
         PARAMS = {'item':itemId}
@@ -43,11 +47,15 @@ class GrandExhangeService:
         item = decoder.decode(r.text)
         #print(item)
         return item
-
+    '''
+    Creates and formats the reply string for given command
+    Displays up to 10 results
+    '''
     def message(self, command):
         itemname = self.parseCommand(command)
         ids = self.findIdForName(itemname)
         if (ids == -1):
+            # no items found -> itemname is bad
             raise Exception("Malformed itemname")
             return
         if len(ids) < 11:
