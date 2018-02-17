@@ -11,7 +11,7 @@ class GrandExhangeService:
     def parseCommand(self, command):
         itemname = command.replace("!osrsGE", "")
         itemname = itemname.strip()
-        print(itemname)
+        #print(itemname)
         return itemname
     '''
     Finds id for itemname
@@ -25,7 +25,7 @@ class GrandExhangeService:
                 if di['name'].lower() == name.lower():
                     return [int(di['id'])]
         if (len(match) > 0):
-            print("got matches")
+            #print("got matches")
             for m in match:
                 ids.append(int(m['id']))
             return ids
@@ -69,21 +69,3 @@ class GrandExhangeService:
             + "Please specify \n" \
             + '------------\n'
         return ms
-
-
-
-
-
-
-
-def testDriver():
-    ge = GrandExhangeService()
-    print(ge.message('!osrsGE Cannon base'))
-    print(ge.message('!osrsGE guam potion (unf)'))
-    print(ge.message('!osrsGE abyssal'))
-    print(ge.message('!osrsGE guam'))
-    print(ge.message('!osrsGE dragon'))
-    #print(ge.message('!osrsGE rune'))
-
-
-#testDriver()

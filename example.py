@@ -51,6 +51,18 @@ async def on_message(message):
             ms = "No such item or too many hits"
         ms = '```' + ms + '```'
         await client.send_message(message.channel, ms)
+    elif message.content.startswith('!help'):
+        reply = "```Commands : \n" \
+        + "!help \nDisplays this message \n" \
+        + "--------\n" \
+        + "!osrsStats [-l] [playername] \n" \
+        + "Shows HiScores for given playername \n" \
+        + "if -l parameter is passed statistics, for all skills are shown \n" \
+        + "---------\n" \
+        + "!osrsGE [item] \n" \
+        + "Finds GE information for objects that match item \n" \
+        + "----------\n```"
+        await client.send_message(message.channel, reply)
 
 #print(sys.argv[1])
 client.run(sys.argv[1])
