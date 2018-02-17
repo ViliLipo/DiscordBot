@@ -7,7 +7,7 @@ skilltable = ["Total","Attack", "Defence", "Strength", \
 "Hp", "Ranged","Prayer","Magic", "Cooking", "Woodcutting", \
 "Fletching", "Fishing", "Firemaking", "Crafting", \
 "Smithing", "Mining", "Herblore", "Agility", \
-"Thieving", "Slayer", "Farming", "Runecraft", "Hunter", \
+"Thieving", "Slayer", "Farming", "Runecrafting", "Hunter", \
 "Construction"]
 
 

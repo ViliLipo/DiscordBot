@@ -4,6 +4,7 @@ import stats
 import argparse
 import sys
 import tools
+import GrandExhange
 
 # Pass the token as a commandline argument"
 client = discord.Client()
@@ -42,5 +43,14 @@ async def on_message(message):
         else:
             reply = "```"  + playerObject.shortMessage() + "```"
         await client.send_message(message.channel, reply)
+    elif message.content.startswith('!osrsGE'):
+        ge = GrandExhange.GrandExhangeService()
+        try:
+            ms = ge.message(message.content)
+        except:
+            ms = "No such item or too many hits"
+        ms = '```' + ms + '```'
+        await client.send_message(message.channel, ms)
+
 #print(sys.argv[1])
 client.run(sys.argv[1])
