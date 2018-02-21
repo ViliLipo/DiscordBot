@@ -3,7 +3,8 @@
 
 def parse_osrs_request(request):
     l = False
-    request = request.replace("!osrsStats", "")
+    request = request.replace("!osrsstats", "")
+    requet = request.replace("!osrsStats", "")
     if request.find(' -l ') != -1:
         l = True
         #print("long requested")

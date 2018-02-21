@@ -8,6 +8,8 @@ import GrandExhange
 
 # Pass the token as a commandline argument"
 client = discord.Client()
+waitTime = 15
+ge = GrandExhange.GrandExhangeService()
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -25,10 +27,22 @@ async def on_message(message):
                 counter += 1
 
         await client.edit_message(tmp, 'You have {} messages.'.format(counter))
+    elif message.content.startswith('!cleanup'):
+        def isMe(m):
+            return m.author == client.user
+        deleted = await client.purge_from(message.channel, limit=100, check=isMe )
+        await client.send_message(message.channel, 'Deleted {} message(s)'.format(len(deleted)))
+    elif message.content.startswith('!removeMyMessages'):
+        author = message.author
+        def isAuthor(m):
+            return m.author == author
+        deleted = await client.purge_from(message.channel, limit=100, check=isAuthor)
+        await client.send_message(message.channel, 'Deleted {} message(s)'.format(len(deleted)))
     elif message.content.startswith('!sleep'):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
-    elif message.content.startswith('!osrsStats'):
+    elif message.content.lower().startswith('!osrsstats'):
+        tmp = await client.send_message(message.channel, "Processing request...")
         l = False
         content = message.content
         player, l = tools.parse_osrs_request(content)
@@ -36,21 +50,31 @@ async def on_message(message):
             playerObject = stats.Player(player)
             playerObject = stats.osrs_request_player(player)
         except:
-            await client.send_message(message.channel, ("Can't find data for " + player))
+            await client.edit_message(tmp, ("Can't find data for " + player))
+            await asyncio.sleep(waitTime)
+            client.delete_message(tmp)
+            client.delete_message(message)
             return
         if (l):
             reply = "```" + playerObject.longMessage() + "```"
         else:
             reply = "```"  + playerObject.shortMessage() + "```"
-        await client.send_message(message.channel, reply)
-    elif message.content.startswith('!osrsGE'):
-        ge = GrandExhange.GrandExhangeService()
+        await client.edit_message(tmp, reply)
+        await asyncio.sleep(waitTime)
+        await client.delete_message(tmp)
+        await client.delete_message(message)
+    elif message.content.lower().startswith('!osrsge'):
+        tmp = await client.send_message(message.channel, "Processing request...")
+        #ge = GrandExhange.GrandExhangeService()
         try:
             ms = ge.message(message.content)
         except:
             ms = "No such item or too many hits"
         ms = '```' + ms + '```'
-        await client.send_message(message.channel, ms)
+        await client.edit_message(tmp, ms)
+        await asyncio.sleep(waitTime)
+        await client.delete_message(tmp)
+        await client.delete_message(message)
     elif message.content.startswith('!help'):
         reply = "```Commands : \n" \
         + "!help \nDisplays this message \n" \
@@ -61,8 +85,12 @@ async def on_message(message):
         + "---------\n" \
         + "!osrsGE [item] \n" \
         + "Finds GE information for objects that match item \n" \
-        + "----------\n```"
-        await client.send_message(message.channel, reply)
+        + "----------\n" \
+        + "All requests and responses are displayed for {} seconds```".format(waitTime)
+        reply = await client.send_message(message.channel, reply)
+        await asyncio.sleep(waitTime)
+        await client.delete_message(message)
+        await client.delete_message(reply)
 
 #print(sys.argv[1])
 client.run(sys.argv[1])

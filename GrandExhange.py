@@ -9,9 +9,10 @@ class GrandExhangeService:
         self.items = json.load(fileObject)
         fileObject.close()
     def parseCommand(self, command):
-        itemname = command.replace("!osrsGE", "")
+        itemname = command.replace("!osrsge", "")
+        itemname = itemname.replace("!osrsGE", "")
         itemname = itemname.strip()
-        #print(itemname)
+        print(itemname)
         return itemname
     '''
     Finds id for itemname
