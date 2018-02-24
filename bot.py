@@ -93,4 +93,5 @@ async def on_message(message):
         await client.delete_message(reply)
 
 #print(sys.argv[1])
-client.run(sys.argv[1])
+import os
+client.run(os.environ['TOKEN'])
