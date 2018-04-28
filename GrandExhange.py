@@ -4,10 +4,12 @@ import json
 
 class GrandExhangeService:
     baseurl = 'http://services.runescape.com/m=itemdb_oldschool'
+
     def __init__(self):
         fileObject = open('objects_87.json', "r")
         self.items = json.load(fileObject)
         fileObject.close()
+
     def parseCommand(self, command):
         itemname = command.replace("!osrsge", "")
         itemname = itemname.replace("!osrsGE", "")
@@ -17,6 +19,7 @@ class GrandExhangeService:
     '''
     Finds id for itemname
     '''
+
     def findIdForName(self, name):
         match = []
         ids = []
@@ -37,21 +40,23 @@ class GrandExhangeService:
     Uses requests to fetch information for one item
     Returns dictionary object representing the item
     '''
+
     def fetchItem(self, itemId):
-        url = self.baseurl +'/api/catalogue/detail.json'
+        url = self.baseurl + '/api/catalogue/detail.json'
         PARAMS = {'item':itemId}
         r = requests.get(url=url, params=PARAMS)
         if(r.status_code != 200):
-            raise Exception ("Could not connect to API")
-        #print(r.text)
+            raise Exception("Could not connect to API")
+        # print(r.text)
         decoder = json.JSONDecoder()
         item = decoder.decode(r.text)
-        #print(item)
+        # print(item)
         return item
     '''
     Creates and formats the reply string for given command
     Displays up to 10 results
     '''
+    
     def message(self, command):
         itemname = self.parseCommand(command)
         ids = self.findIdForName(itemname)

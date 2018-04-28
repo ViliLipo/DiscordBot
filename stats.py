@@ -3,49 +3,59 @@ import requests
 import re
 
 
-skilltable = ["Total","Attack", "Defence", "Strength", \
-"Hp", "Ranged","Prayer","Magic", "Cooking", "Woodcutting", \
-"Fletching", "Fishing", "Firemaking", "Crafting", \
-"Smithing", "Mining", "Herblore", "Agility", \
-"Thieving", "Slayer", "Farming", "Runecrafting", "Hunter", \
-"Construction"]
+skilltable = ["Total", "Attack", "Defence", "Strength",
+              "Hp", "Ranged", "Prayer", "Magic", "Cooking", "Woodcutting",
+              "Fletching", "Fishing", "Firemaking", "Crafting",
+              "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer",
+              "Farming", "Runecraft", "Hunter", "Construction"]
 
 # Simple class for managing skill lines
+
+
 class Skill:
     def __init__(self, index):
         self.name = skilltable[index]
-        #print(self.name)
+        # print(self.name)
         self.rank = 0
         self.exp = 0
         self.level = 0
+
     def __str__(self):
-        #text = (self.name + " Rank: " + str(self.rank) + " Experience: " + str(self.exp) + " Level: " + str(self.level))
-        text = '|{0:12}|{1:7}|{2:9}|{3:5}|'.format(self.name, str(self.rank), str(self.exp), str(self.level))
+        # text = (self.name + " Rank: " + str(self.rank) + " Experience: " + str(self.exp) + " Level: " + str(self.level))
+        text = '|{0:12}|{1:7}|{2:9}|{3:5}|'.format(self.name, str(self.rank),
+                                                   str(self.exp),
+                                                   str(self.level))
         text = text + "\n ------------------------------------"
         return text
 # Simple class for managing hiscores from one player
+
+
 class Player:
     def __init__(self, playername):
         self.name = playername
         self.skills = []
+
     def shortMessage(self):
         #print("shortMessage")
         message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:9}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
-        message = message +  "\n ------------------------------------"
-        message = message +"\n" + str(self.skills[0])
+        message = message + "\n ------------------------------------"
+        message = message + "\n" + str(self.skills[0])
         return message
+
     def longMessage(self):
         message = self.name + "'s OSRS Hi Scores'\n" + '|{0:12}|{1:7}|{2:9}|{3:5}|'.format("Skill", "Rank", "XP", "Level")
-        message = message +  "\n ------------------------------------\n"
+        message = message + "\n ------------------------------------\n"
         for skill in self.skills:
             message = message + str(skill) + "\n"
         return message
 
-#function that returns playerObject from api.
+# function that returns playerObject from api.
+
+
 def osrs_request_player(playername):
     print("Fetching")
     API_ENDPOINT = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"
-    PARAMS = {'player':playername}
+    PARAMS = {'player': playername}
     r = requests.get(url=API_ENDPOINT, params=PARAMS)
     if (r.status_code != 200):
         raise Exception('Can not find find player')
@@ -55,9 +65,9 @@ def osrs_request_player(playername):
     if content == "":
         raise Exception('Can not find find player')
         return
-    #print(content)
+    # print(content)
     player = Player(playername)
-    #print(content)
+    # print(content)
     lines = content.split('\n')
     for i in range(0, len(skilltable)):
         line = lines[i]
